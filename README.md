@@ -3,14 +3,13 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Technology](https://img.shields.io/badge/Tech-React_18_/_Vite_/_TypeScript-61dafb.svg)]()
 [![Acoustics](https://img.shields.io/badge/Acoustics-Web_Audio_API-ff6b6b.svg)]()
-[![Live Demo](https://img.shields.io/badge/Demo-Live_Preview-success.svg?style=for-the-badge&logo=google-chrome&logoColor=white)](https://ais-pre-6ivkc234wczhtowfjdedbl-387032727123.europe-west1.run.app)
+[![Live Demo](https://img.shields.io/badge/Demo-Live_Preview-success.svg?style=for-the-badge&logo=google-chrome&logoColor=white)]([https://ais-pre-6ivkc234wczhtowfjdedbl-387032727123.europe-west1.run.app](https://real-time-3-d-triangulation-based-o.vercel.app/))
 
 > **یک موتور پیشرفته پردازش، پردازش سیگنال و تصویرسازی سه‌بعدی آکوستیک در مرورگر وب**
 > 
 > **ایده‌پرداز و توسعه‌دهنده: امیرسامان پیرایش فر (AmirSaman Pirayeshfar)**
 > 
-> 🌐 **[مشاهده دمو زنده نسخه پیش‌نمایش کارگاهی (Live Preview)](https://ais-pre-6ivkc234wczhtowfjdedbl-387032727123.europe-west1.run.app)**
-> *(نکته برای انتشار: لطفاً پس از آپلود در گیت‌هاب، لینک بالا را با آدرس GitHub Pages یا Vercel خود جایگزین کنید.)*
+> 🌐 **[مشاهده دمو زنده نسخه پیش‌نمایش کارگاهی (Live Preview)]([https://ais-pre-6ivkc234wczhtowfjdedbl-387032727123.europe-west1.run.app](https://real-time-3-d-triangulation-based-o.vercel.app/))**
 
 ---
 
