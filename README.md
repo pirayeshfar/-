@@ -3,14 +3,18 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Technology](https://img.shields.io/badge/Tech-React_18_/_Vite_/_TypeScript-61dafb.svg)]()
 [![Acoustics](https://img.shields.io/badge/Acoustics-Web_Audio_API-ff6b6b.svg)]()
+[![Live Demo](https://img.shields.io/badge/Demo-Live_Preview-success.svg?style=for-the-badge&logo=google-chrome&logoColor=white)](https://ais-pre-6ivkc234wczhtowfjdedbl-387032727123.europe-west1.run.app)
 
 > **یک موتور پیشرفته پردازش، پردازش سیگنال و تصویرسازی سه‌بعدی آکوستیک در مرورگر وب**
 > 
 > **ایده‌پرداز و طراح: امیرسامان پیرایش فر (AmirSaman Pirayeshfar)**
+> 
+> 🌐 **[مشاهده دموی آنلاین و زنده نسخه کارگاهی (Live Demo)](https://ais-pre-6ivkc234wczhtowfjdedbl-387032727123.europe-west1.run.app)**
 
 ---
 
 ## 📋 فهرست مطالب (Table of Contents)
+- [🔗 لینک دموی آنلاین (Live Demo Link)](#-لینک-دموی-آنلاین-live-demo-link)
 - [معرفی کلی سیستم (Introduction)](#معرفی-کلی-سیستم-introduction)
 - [طراح و ایده‌پرداز (Ideator & Designer)](#طراح-و-ایده‌پرداز-ideative-designer)
 - [لایسنس پروژه (License)](#لایسنس-پروژه-license)
@@ -19,6 +23,14 @@
 - [راهنمای جامع بخش‌های سامانه (User Interface Guide)](#راهنمای-جامع-بخشهای-سامانه-user-interface-guide)
 - [قابلیت اتصال کینکت ایکس‌باکس ۳۶۰ (Xbox 360 Kinect Integration)](#قابلیت-اتصال-کینکت-ایکس‌باکس-۳۶۰-xbox-360-kinect-integration)
 - [نصب و راه‌اندازی (Installation & Setups)](#نصب-و-راه‌اندازی-installation--setups)
+
+---
+
+## 🔗 لینک دموی آنلاین (Live Demo Link)
+
+برای بررسی و تست پویای برنامه بدون نیاز به فرآیند طولانی کلاینت‌ساید، می‌توانید از لینک دموی رسمی و ابری پروژه با لمس دکمه زیر استفاده نمایید:
+
+📥 **[ورود به دموی ابری و زنده کارگاه آکوستیک AuraAcoustic](https://ais-pre-6ivkc234wczhtowfjdedbl-387032727123.europe-west1.run.app)**
 
 ---
 
@@ -190,4 +202,4 @@ npm run build
 ---
 
 🌌 **با استفاده از AuraAcoustic CORE و ترکیب آن با خلاقیت و سخت‌افزارهای جذاب نظیر کینکت، پنجره‌ای نو به سوی مدلسازی و نقشه‌برداری‌های عمیق صوتی بگشایید.**
-🏆 *کلیه حقوق طراحی، ایده‌پردازی و توسعه سورس برای **امیرسامان پیرایش فر** محفوظ است.*
+🏆 *کلیه حقوق طراحی، ایده‌پردازی و توسعه سورس برای **جناب امیرسامان پیرایش فر** با احترام محفوظ است.*
