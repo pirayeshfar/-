@@ -271,6 +271,6 @@ npm run build
 
 ---
 
-*All conceptual frameworks, designs, and source implementations are proudly authored by **AmirSaman Pirayeshfar**.*
+*All conceptual frameworks, designs, and source implementations are proudly authored by **Amir Saman Pirayeshfar**.*
 
 </div>
