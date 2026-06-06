@@ -1,20 +1,193 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# 🌌 AuraAcoustic Engine - V1.4.0-CORE
 
-# Run and deploy your AI Studio app
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Technology](https://img.shields.io/badge/Tech-React_18_/_Vite_/_TypeScript-61dafb.svg)]()
+[![Acoustics](https://img.shields.io/badge/Acoustics-Web_Audio_API-ff6b6b.svg)]()
 
-This contains everything you need to run your app locally.
+> **یک موتور پیشرفته پردازش، پردازش سیگنال و تصویرسازی سه‌بعدی آکوستیک در مرورگر وب**
+> 
+> **ایده‌پرداز و طراح: امیرسامان پیرایش فر (AmirSaman Pirayeshfar)**
 
-View your app in AI Studio: https://ai.studio/apps/6e09d259-0a5a-4f0d-929d-53cde104292a
+---
 
-## Run Locally
+## 📋 فهرست مطالب (Table of Contents)
+- [معرفی کلی سیستم (Introduction)](#معرفی-کلی-سیستم-introduction)
+- [طراح و ایده‌پرداز (Ideator & Designer)](#طراح-و-ایده‌پرداز-ideative-designer)
+- [لایسنس پروژه (License)](#لایسنس-پروژه-license)
+- [ویژگی‌های کلیدی هسته دینامیکی (Key Features)](#ویژگیهای-کلیدی-هسته-دینامیکی-key-features)
+- [معماری فنی و مهندسی صدا (Technical Architecture)](#معماری-فنی-و-مهندسی-صدا-technical-architecture)
+- [راهنمای جامع بخش‌های سامانه (User Interface Guide)](#راهنمای-جامع-بخشهای-سامانه-user-interface-guide)
+- [قابلیت اتصال کینکت ایکس‌باکس ۳۶۰ (Xbox 360 Kinect Integration)](#قابلیت-اتصال-کینکت-ایکس‌باکس-۳۶۰-xbox-360-kinect-integration)
+- [نصب و راه‌اندازی (Installation & Setups)](#نصب-و-راه‌اندازی-installation--setups)
 
-**Prerequisites:**  Node.js
+---
 
+## 🌊 معرفی کلی سیستم (Introduction)
+پروژه **AuraAcoustic CORE** یک کارگاه پردازش سیگنال و ابزار تحلیل تخصصی مهندسی آکوستیک به صورت Real-time (بی‌درنگ) است. این پروژه با شبیه‌سازی دقیق فضا، اثر دوپلر، جذب موج در جو مرطوب و خشک، و همچنین دریافت ورودی واقعی میکروفیک توانسته تحلیل‌های پیشرفته حوزه‌ی فرکانسی (از فروصوت ۱۴ هرتز تا فراصوت ۲۰ کیلوهرتز) را در قالب سیستم رادار ۳بعدی قطبی و آبشار ۳بعدیِ فرکانسی (Spectrogram Waterfall 3D) پیاده‌سازی کند.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+---
+
+## 👤 طراح و ایده‌پرداز (Ideator & Designer)
+همانطور که در امضای سیستم و پانل مرجع پلتفرم درج گردیده است، کلیه حقوق طراحی، معماری سیستم و توسعه‌ی این موتور آکوستیک تحت نظارت مستقیم شخص زیر به ثبت رسیده است:
+
+*   **نام طراح:** امیرسامان پیرایش فر
+*   **پست الکترونیکی:** `pirayeshfar@gmail.com`
+*   **سند مالکیت معنوی:** این مخزن برای اهداف منبع باز (Open-Source) و توسعه‌ی حرفه‌ای مهندسی صدا آماده‌سازی گردیده است.
+
+---
+
+## 📄 لایسنس پروژه (License)
+این پروژه تحت **لایسنس بین‌المللی MIT** منتشر شده است. 
+
+```text
+The MIT License (MIT)
+
+Copyright (c) 2026 AmirSaman Pirayeshfar (امیرسامان پیرایش فر)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
+
+---
+
+## ⚡ ویژگی‌های کلیدی هسته دینامیکی (Key Features)
+
+### ۱. آبشار فرکانسی سه‌بعدی کاملاً تعاملی (Interactive 3D Waterfall Spectrogram)
+*   **رندر تعاملی ۳۶۰ درجه آزاد:** قابلیت چرخش زاویه دید (Pitch و Yaw) به صورت ۳۶۰ درجه به همراه کنترل زاویه تلسکوپی از زاویه صفر افقی تا دید مستقیم عمودی از بالا (Orthographic Top-Down Map View).
+*   **بزرگ‌نمایی دینامیک با مکانیزم Wheel:** پشتیبانی از زوم روان با استفاده از اسکرول ماوس و ترک‌پد.
+*   **شبیه‌سازی بازه‌ی وسیع آکوستیکی:** پوشش دقیق فرکانس‌های رادار از فروصوت (Infrasound - زیر ۲۰ هرتز) تا فراصوت (Ultrasound - بالای ۱۶ کیلوهرتز).
+
+### ۲. رادار جهت‌یابی صدا (3D Sound Compass Engine)
+*   **آنالیز فازی دوگانه (L/R Phase Sync):** آنالیز اختلاف فاز ورود صدا به میکروفون چپ و راست (ITD - Interaural Time Difference) برای پیدا کردن زاویه دقیق برخورد صدا به صورت زنده.
+*   **میکسر مجازی چشمه‌های صوتی:** دارا بودن ۳ شبیه‌ساز چشمه صوتی متحرک با امکان تغییر فاصله، فرکانس، شتاب و بردار انتقال صوت.
+
+### ۳. کارشناس صوتی هوشمند (AI Acoustic Expert Panel)
+*   بخش هوشمند فازی جهت ارائه راهکار فنی و فرمول‌های توصیفی به زبان شیرین فارسی مبتنی بر فرکانس غالب سیستم، چگالی طیفی ورودی و سطح استهلاک سیگنال.
+
+---
+
+## 🛠️ معماری فنی و مهندسی صدا (Technical Architecture)
+
+پروژه به طور استاندارد بر بستر ابزارهای مدرن وب پیاده‌سازی شده است:
+1.  **React 18 / Typescript:** جهت هدایت ساختارمند کامپوننت‌های فرانت‌اند.
+2.  **Tailwind CSS:** طراحی رابط کاربری بسیار مدرن به سبک Sophisticated Dark با حفظ بیشترین سرعت بارگذاری.
+3.  **Furig / Canvas 2D Object Projection:** به جای لایبرری‌های سنگین چون Three.js، در این سیستم از ترانسفورمشنِ محضِ فرمول‌های گرافیکی سه بعدی به دو بعدی استفاده شده است که با استفاده از الگوریتم **نقاش دینامیک (Dynamic Painter's Algorithm with Sorted Occlusions)** لایه‌های فرکانسی را با مرتب‌سازی برداری رسم می‌کند تا تداخلی در عمق دید و چرخش ۳۶۰ درجه به وجود نیاید.
+
+---
+
+## 📺 راهنمای جامع بخش‌های سامانه (User Interface Guide)
+
+در این بخش، اجزای مختلف پنل کاربری توضیح داده شده است:
+
+### ۱. بخش نمایشگر ۳بعدی آبشار فرکانسی (3D Spectral Waterfall)
+> *[جهت قرارگیری اسکرین‌شات: `assets/3d_waterfall_preview.png`]*
+*   **توضیح:** این پنل، تاریخچه امواج صوتی دریافتی را بر اساس زمان، توزیع فرکانس و قدرت برداری رسم می‌کند. از طریق کشیدن ماوس (Left Click + Drag) می‌توانید نمودار را ۳۶۰ درجه بچرخانید و با غلتک ماوس (Scroll) فاصله دوربین را در فضا تنظیم کنید.
+*   **عملکرد کنترلرها:** گزینه‌های تغییر حساسیت (Sensitivity)، نرخ فرکانس‌ها و چگالی شبکه‌ای به شما در بهینه‌سازی بار پردازشی گرافیکی متناسب با کارت گرافیک سیستم کمک می‌کنند.
+
+### ۲. بخش رادار قطبی سه‌بعدی و مکان‌یاب صوتی (3D Radar Sound Tracker)
+> *[جهت قرارگیری اسکرین‌شات: `assets/3d_radar_preview.png`]*
+*   **توضیح:** رادار سه‌بعدی با استفاده از شبیه‌سازها یا فید واقعی میکروفون، کانون زاویه‌ای صدا را در محور دکارتی به نمایش می‌کشد. امواج منتشر شده از شبیه‌سازها نیز به شکل پالس‌های هاله در فضا انتشار می‌یابند.
+
+### ۳. بخش دسته‌بندی باندها (Acoustic Band Classifier)
+*   سیستم به صورت خودکار مقادیر دریافتی را در ۵ باند استاندارد آکوستیکی تفکیک می‌کند:
+    *   **Infrasound (فروصوت):** زیر ۲۰ هرتز (مثل زمین‌لرزه‌ها یا اصوات صنعتی دور).
+    *   **Human-Bass (باس انسانی):** ۲۰ هرتز الی ۲۵۰ هرتز.
+    *   **Human-Mid (مید رنج):** ۲۵۰ هرتز الی ۴ کیلوهرتز (محدوده تکلم انسان).
+    *   **Human-High (تریبل):** ۴ کیلوهرتز الی ۱۶ کیلوهرتز.
+    *   **Ultrasound (فراصوت):** ۱۶ کیلوهرتز الی ۲۰ کیلوهرتز+ (مانند بال پشه‌ها یا فرستنده‌های مایکرو).
+
+---
+
+## 🎮 قابلیت اتصال کینکت ایکس‌باکس ۳۶۰ (Xbox 360 Kinect Integration)
+
+یکی از سوالات کلیدی این است که: **چگونه می‌توان کینکت ایکس‌باکس ۳۶۰ (Xbox 360 Kinect) را به این سامانه متصل نمود و از آرایه میکروفون‌های ۴تایی آن استفاده کرد؟**
+
+### فرآیند فنی کینکت آکوستیک (Kinect Acoustic Beamforming)
+دستگاه Kinect 360 مجهز به یک **آرایه خطی متشکل از ۴ میکروفونِ تمام‌جهته (4-Microphone Linear Array)** با وضوح بالا است که مستقیما با مدارهای پردازش سخت‌افزاری DSP کار می‌کند. این سنسور از الگوریتم **تخمین زاویه تابش امواج (DOA Estimation)** و **Beamforming** سخت‌افزاری پشتیبانی می‌کند تا بتواند جهت صدای کاربر را تا حد ۱ درجه خطا دقیق پیگیری ارزیابی کند.
+
+### روش‌های اتصال و استفاده در سامانه:
+
+#### روش اول: خروجی صدای استریوی مجازی (OS Level Driver mapping)
+اگر از درایورهای رسمی ویندوز (Kinect for Windows SDK v1.8) استفاده کنید، سیستم‌عامل آرایه میکروفون را به عنوان یک کپسول صوتی استریو یا مونو استاندارد تعریف خواهد کرد. در این حالت:
+1.  برنامه را باز کرده و دکمه **«اتصال میکروفون واقعی»** را فعال نمایید.
+2.  با فوت کردن یا ایجاد نویز در فواصل چپ یا راست کینکت، اختلاف فاز زمان رسیدن صدا (ITD) بر روی پنل **رادار ۳بعدی** منعکس می‌شود و زاویه برخورد دقیقا به عنوان هدف ثبت خواهد شد.
+
+#### روش دوم: یکپارچه‌سازی وب‌سوکت برای مختصات مطلق سه‌بعدی (WebSocket Bridge)
+برای افزایش وضوح و بهره‌برداری کامل از دقت سخت‌افزاری کینکت، می‌توان یک اسکریپت واسط (موتور پایتون) با کتابخانه `pykinect` یا `libfreenect` نوشت تا زاویه برخورد صوتی را به صورت مقادیر فیزیکی درجه استخراج نموده و آن را به واسط مرورگر بفرستد:
+
+```python
+# نمونه کارهای واسط انتقال مختصات فضایی کینکت به مرورگر شما بر بستر وب‌سوکت
+# kinect_audio_bridge.py
+import asyncio
+import websockets
+import json
+import pykinect # یا استفاده از فریم‌ورک‌های مشابه در لینوکس
+
+async def stream_kinect_audio_doas(websocket):
+    print("Kinect Acoustic Engine Bridge Activated!")
+    while True:
+        # دریافت زاویه برخورد صدا (Acoustic Beam Angle) به طور لحظه‌ای از سخت‌افزار کینکت
+        # زاویه بین ۹۰- الی ۹۰+ درجه بر اساس توزیع خطی ۴ میکروفون
+        kinect_beam_angle = read_kinect_hardware_doa() 
+        confidence = read_kinect_confidence_score()
+        
+        data = {
+            "angle": kinect_beam_angle,
+            "confidence": confidence,
+            "source": "Kinect Xbox 360 Array"
+        }
+        await websocket.send(json.dumps(data))
+        await asyncio.sleep(0.016) # ۶۰ هرتز فرستادن اطلاعات
+
+# اجرای سرور وب سوکت لوکال ران شده روی پورت دلخواه
+```
+
+در کدهای اصلی `App.tsx` با فعال کردن یک کلاینت وب‌سوکت ساده به صورت `const ws = new WebSocket(...)` می‌توان مختصات خوانده شده از آرایه ۴تایی کینکت را جایگزین مقادیر شبیه‌ساز نمود تا بدین ترتیب رادار پروژه تبدیل به یک دکتور دقیق در دنیای فیزیکی گردد!
+
+**نتیجه:** اتصال کینکت فوق‌العاده تاثیرگذار است، چرا که فرآیند فیلتر نویز صوتی (Acoustic Noise Suppression) و اکوگیری به طور پسیو در دستگاه انجام شده و رادار جهت‌یابی صدا، تصویری به مراتب پایدارتر و شفاف‌تر بدون تداخل باد یا لرزش اسپیکرها نمایش خواهد داد.
+
+---
+
+## 🚀 نصب و راه‌اندازی (Installation & Setups)
+
+جهت اجرای روان این پروژه مدرن بر روی لوکال یا استقرار بر روی سرورهای ابری، فرآیند کوتاه زیر را دنبال کنید:
+
+### ۱. دریافت نیازمندی‌ها و پکیج‌ها (Install Dependencies)
+بر روی ترمینال داخل دایرکتوری اصلی پروژه، کد زیر را وارد نمایید تا کتابخانه‌ها دانلود و نصب شوند:
+```bash
+npm install
+```
+
+### ۲. اجرای حالت توسعه (Development Hot Reload)
+برای بالا آمدن سرور محلی وب روی سیستم شما:
+```bash
+npm run dev
+```
+سپس آدرس محلی در مرورگر (معمولاً `http://localhost:3000`) را باز نموده تا از سامانه استفاده کنید.
+
+### ۳. ساخت نسخه نهایی وب‌سایت استاتیک (Build Production Bundle)
+برای تولید کدهای مینیمال و نهایی‌شده جهت آپلود مستقیم در صفحات گیت‌هاب (GitHub Pages) یا سایر پلتفرم‌های هاستینگ:
+```bash
+npm run build
+```
+کدهای ساخته شده در پوشه `dist` غنی از بهینه‌ترین فایل‌های HTML، CSS و JS آماده قرارگیری در هر سروری هستند.
+
+---
+
+🌌 **با استفاده از AuraAcoustic CORE و ترکیب آن با خلاقیت و سخت‌افزارهای جذاب نظیر کینکت، پنجره‌ای نو به سوی مدلسازی و نقشه‌برداری‌های عمیق صوتی بگشایید.**
+🏆 *کلیه حقوق طراحی، ایده‌پردازی و توسعه سورس برای **جناب امیرسامان پیرایش فر** با احترام محفوظ است.*
