@@ -3,13 +3,13 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Technology](https://img.shields.io/badge/Tech-React_18_/_Vite_/_TypeScript-61dafb.svg)]()
 [![Acoustics](https://img.shields.io/badge/Acoustics-Web_Audio_API-ff6b6b.svg)]()
-[![Live Demo](https://img.shields.io/badge/Demo-Live_Preview-success.svg?style=for-the-badge&logo=google-chrome&logoColor=white)]([https://ais-pre-6ivkc234wczhtowfjdedbl-387032727123.europe-west1.run.app](https://real-time-3-d-triangulation-based-o.vercel.app/))
+[![Live Demo](https://img.shields.io/badge/Demo-Live_Preview-success.svg?style=for-the-badge&logo=google-chrome&logoColor=white)](https://real-time-3-d-triangulation-based-o.vercel.app/)
 
 > **یک موتور پیشرفته پردازش، پردازش سیگنال و تصویرسازی سه‌بعدی آکوستیک در مرورگر وب**
 > 
 > **ایده‌پرداز و توسعه‌دهنده: امیرسامان پیرایش فر (AmirSaman Pirayeshfar)**
 > 
-> 🌐 **[مشاهده دمو زنده نسخه پیش‌نمایش کارگاهی (Live Preview)]([https://ais-pre-6ivkc234wczhtowfjdedbl-387032727123.europe-west1.run.app](https://real-time-3-d-triangulation-based-o.vercel.app/))**
+> 🌐 **[مشاهده دمو زنده نسخه پیش‌نمایش کارگاهی (Live Preview)](https://real-time-3-d-triangulation-based-o.vercel.app/)**
 
 ---
 
@@ -28,11 +28,9 @@
 
 ## 🔗 لینک پیش‌نمایش (Live Preview Link)
 
-برای بررسی و تست پویای برنامه، می‌توانید از لینک دموی رسمی و ابری پروژه با لمس دکمه زیر استفاده نمایید:
+برای بررسی و تست پویای برنامه، می‌توانید از لینک دموی رسمی استقرار یافته روی ورسل با لمس دکمه زیر استفاده نمایید:
 
-📥 **[ورود به دموی ابری و زنده کارگاه آکوستیک AuraAcoustic](https://ais-pre-6ivkc234wczhtowfjdedbl-387032727123.europe-west1.run.app)**
-
-*نکته فنی:* پیوند فوق مربوط به سرور پیش‌نمایش Google AI Studio است. پس از استقرار نهایی پروژه روی هاست خودتان (مانند GitHub Pages, Netlify یا Vercel)، می‌توانید آدرس بالا را ویرایش کرده و لینک خود را جایگزین کنید.
+📥 **[ورود به دموی ابری و زنده کارگاه آکوستیک AuraAcoustic](https://real-time-3-d-triangulation-based-o.vercel.app/)**
 
 ---
 
@@ -109,12 +107,14 @@ SOFTWARE.
 در این بخش، اجزای مختلف پنل کاربری توضیح داده شده است:
 
 ### ۱. بخش نمایشگر ۳بعدی آبشار فرکانسی (3D Spectral Waterfall)
-> *[جهت قرارگیری اسکرین‌شات: `assets/3d_waterfall_preview.png`]*
+
+![3D Waterfall Preview](src/assets/images/waterfall_preview_1780773188614.png)
 *   **توضیح:** این پنل، تاریخچه امواج صوتی دریافتی را بر اساس زمان، توزیع فرکانس و قدرت برداری رسم می‌کند. از طریق کشیدن ماوس (Left Click + Drag) می‌توانید نمودار را ۳۶۰ درجه بچرخانید و با غلتک ماوس (Scroll) فاصله دوربین را در فضا تنظیم کنید.
 *   **عملکرد کنترلرها:** گزینه‌های تغییر حساسیت (Sensitivity)، نرخ فرکانس‌ها و چگالی شبکه‌ای به شما در بهینه‌سازی بار پردازشی گرافیکی متناسب با کارت گرافیک سیستم کمک می‌کنند.
 
 ### ۲. بخش رادار قطبی سه‌بعدی و مکان‌یاب صوتی (3D Radar Sound Tracker)
-> *[جهت قرارگیری اسکرین‌شات: `assets/3d_radar_preview.png`]*
+
+![3D Radar Preview](src/assets/images/radar_preview_1780773205826.png)
 *   **توضیح:** رادار سه‌بعدی با استفاده از شبیه‌سازها یا فید واقعی میکروفون، کانون زاویه‌ای صدا را در محور دکارتی به نمایش می‌کشد. امواج منتشر شده از شبیه‌سازها نیز به شکل پالس‌های هاله در فضا انتشار می‌یابند.
 
 ### ۳. بخش دسته‌بندی باندها (Acoustic Band Classifier)
