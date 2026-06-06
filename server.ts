@@ -34,7 +34,8 @@ function getGeminiClient(): GoogleGenAI {
 // REST endpoint for AI Acoustic analysis
 app.post("/api/analyze-acoustics", async (req, res) => {
   try {
-    const { peakHz, avgHz, volumeDb, band, profile, description } = req.body;
+    const { peakHz, avgHz, volumeDb, band, profile, description, lang } = req.body;
+    const isEn = lang === 'en';
 
     const systemPrompt = `You are an expert sound engineer and acoustician.
 The user is running a real-time web audio analyzer that captures frequency data.
@@ -42,13 +43,13 @@ Your goal is to explain and identify this sound based on its frequency metrics:
 - Peak frequency: ${peakHz} Hz
 - Average frequency: ${avgHz} Hz
 - Relative volume/amplitude: ${volumeDb} dB
-- Acoustic Band: ${band} (e.g. Infrasound, Human Bass, Human Midrange, Human Highs, Ultrasound)
+- Acoustic Band: ${band} 
 - Spectral Profile: ${profile} 
 
-Please respond in a highly engaging, professional, bilingual format (in both English and Persian/Farsi):
+Please respond in a highly engaging, professional manner in ${isEn ? 'English' : 'Persian (Farsi)'}:
 1. First, provide a neat outline of potential real-world sources generating this specific signature (e.g., mosquito hum, bat vocalization, computer cooling fan, key rattling, human speech, subsonic mechanical truck, whistle, water faucet).
 2. Explain the physical science/acoustics behind this frequency band (i.e. if standard speakers can reproduce it, if humans can hear it, its physical wavelength, or its propagation properties).
-3. Keep the entire response elegant, clear, and highly scannable using markdown headings, bold terms, and neat bullet points. Ensure both English text and Persian translation are present block-by-block. Use Farsi as a primary or supplementary language in Farsi segments.`;
+3. Keep the entire response elegant, clear, and highly scannable using markdown headings (e.g., ## or ###), bold terms, and neat bullet points. Keep paragraph lengths short. Write in a polite, professional, and humble voice from the perspective of an expert audio engineer. Do not include any meta-introductions or self-congratulations.`;
 
     const ai = getGeminiClient();
     const response = await ai.models.generateContent({

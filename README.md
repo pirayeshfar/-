@@ -5,7 +5,9 @@
 [![Acoustics](https://img.shields.io/badge/Acoustics-Web_Audio_API-ff6b6b.svg)]()
 [![Live Demo](https://img.shields.io/badge/Demo-Live_Preview-success.svg?style=for-the-badge&logo=google-chrome&logoColor=white)](https://real-time-3-d-triangulation-based-o.vercel.app/)
 
-> **یک موتور پیشرفته پردازش، پردازش سیگنال و تصویرسازی سه‌بعدی آکوستیک در مرورگر وب**
+<div dir="rtl" align="justify">
+
+> **یک موتور پیشرفته پردازش سیگنال و تصویرسازی سه‌بعدی آکوستیک در مرورگر وب**
 > 
 > **ایده‌پرداز و توسعه‌دهنده: امیرسامان پیرایش فر (AmirSaman Pirayeshfar)**
 > 
@@ -35,7 +37,7 @@
 ---
 
 ## 🌊 معرفی کلی سیستم (Introduction)
-پروژه **AuraAcoustic CORE** کارگاه پردازش سیگنال تخصصی و موتور تحلیل آکوستیک به صورت Real-time (بی‌درنگ) من است. ابزارها و کدهای این پروژه را برای شبیه‌سازی دقیق فضا، پدیده دوپلر، جذب موج صوتی در جو مرطوب یا خشک و فرآیند تحلیل پیشرفته حوزه‌ی فرکانسی (از فروصوت ۱۴ هرتز تا فراصوت ۲۰ کیلوهرتز) در قالب یک سیستم رادار ۳بعدی قطبی و آبشار ۳بعدی فرکانسی (Spectrogram Waterfall 3D) طراحی و پیاده‌سازی کرده‌ام.
+پروژه **AuraAcoustic CORE** کارگاه پردازش سیگنال تخصصی و موتور تحلیل آکوستیک به صورت Real-time (بی‌درنگ) من است. ابزارها و کدهای این پروژه را برای شبیه‌ساز دقیق فضا، پدیده دوپلر، جذب موج صوتی در جو مرطوب یا خشک و فرآیند تحلیل پیشرفته حوزه‌ی فرکانسی (از فروصوت ۱۴ هرتز تا فراصوت ۲۰ کیلوهرتز) در قالب یک سیستم رادار ۳بعدی قطبی و آبشار ۳بعدی فرکانسی (Spectrogram Waterfall 3D) طراحی و پیاده‌سازی کرده‌ام.
 
 ---
 
@@ -98,7 +100,7 @@ SOFTWARE.
 پروژه به طور استاندارد بر بستر ابزارهای مدرن وب پیاده‌سازی شده است:
 1.  **React 18 / Typescript:** جهت هدایت ساختارمند کامپوننت‌های فرانت‌اند.
 2.  **Tailwind CSS:** طراحی رابط کاربری بسیار مدرن به سبک Sophisticated Dark با حفظ بیشترین سرعت بارگذاری.
-3.  **Furig / Canvas 2D Object Projection:** به جای لایبرری‌های سنگین چون Three.js، در این سیستم از ترانسفورمشنِ محضِ فرمول‌های گرافیکی سه بعدی به دو بعدی استفاده شده است که با استفاده از الگوریتم **نقاش دینامیک (Dynamic Painter's Algorithm with Sorted Occlusions)** لایه‌های فرکانسی را با مرتب‌سازی برداری رسم می‌کند تا تداخلی در عمق دید و چرخش ۳۶۰ درجه به وجود نیاید.
+3.  **Graphic Projection / Canvas 2D:** به جای لایبرری‌های سنگین چون Three.js، در این سیستم از ترانسفورمشنِ محضِ فرمول‌های گرافیکی سه بعدی به دو بعدی استفاده شده است که با استفاده از الگوریتم **نقاش دینامیک (Dynamic Painter's Algorithm with Sorted Occlusions)** لایه‌های فرکانسی را با مرتب‌سازی برداری رسم می‌کند تا تداخلی در عمق دید و چرخش ۳۶۰ درجه به وجود نیاید.
 
 ---
 
@@ -145,18 +147,15 @@ SOFTWARE.
 برای افزایش وضوح و بهره‌برداری کامل از دقت سخت‌افزاری کینکت، می‌توان یک اسکریپت واسط (موتور پایتون) با کتابخانه `pykinect` یا `libfreenect` نوشت تا زاویه برخورد صوتی را به صورت مقادیر فیزیکی درجه استخراج نموده و آن را به واسط مرورگر بفرستد:
 
 ```python
-# نمونه کارهای واسط انتقال مختصات فضایی کینکت به مرورگر شما بر بستر وب‌سوکت
 # kinect_audio_bridge.py
 import asyncio
 import websockets
 import json
-import pykinect # یا استفاده از فریم‌ورک‌های مشابه در لینوکس
+import pykinect
 
 async def stream_kinect_audio_doas(websocket):
     print("Kinect Acoustic Engine Bridge Activated!")
     while True:
-        # دریافت زاویه برخورد صدا (Acoustic Beam Angle) به طور لحظه‌ای از سخت‌افزار کینکت
-        # زاویه بین ۹۰- الی ۹۰+ درجه بر اساس توزیع خطی ۴ میکروفون
         kinect_beam_angle = read_kinect_hardware_doa() 
         confidence = read_kinect_confidence_score()
         
@@ -167,13 +166,9 @@ async def stream_kinect_audio_doas(websocket):
         }
         await websocket.send(json.dumps(data))
         await asyncio.sleep(0.016) # ۶۰ هرتز فرستادن اطلاعات
-
-# اجرای سرور وب سوکت لوکال ران شده روی پورت دلخواه
 ```
 
 در کدهای اصلی `App.tsx` با فعال کردن یک کلاینت وب‌سوکت ساده به صورت `const ws = new WebSocket(...)` می‌توان مختصات خوانده شده از آرایه ۴تایی کینکت را جایگزین مقادیر شبیه‌ساز نمود تا بدین ترتیب رادار پروژه تبدیل به یک دکتور دقیق در دنیای فیزیکی گردد!
-
-**نتیجه:** اتصال کینکت فوق‌العاده تاثیرگذار است، چرا که فرآیند فیلتر نویز صوتی (Acoustic Noise Suppression) و اکوگیری به طور پسیو در دستگاه انجام شده و رادار جهت‌یابی صدا، تصویری به مراتب پایدارتر و شفاف‌تر بدون تداخل باد یا لرزش اسپیکرها نمایش خواهد داد.
 
 ---
 
@@ -205,3 +200,77 @@ npm run build
 
 🌌 **با استفاده از AuraAcoustic CORE و ترکیب آن با خلاقیت و سخت‌افزارهای جذاب نظیر کینکت، پنجره‌ای نو به سوی مدلسازی و نقشه‌برداری‌های عمیق صوتی بگشایید.**
 🏆 *تمامی حقوق طراحی، ایده‌پردازی و توسعه‌ی این سورس‌کد متعلق به **امیرسامان پیرایش فر** است.*
+
+</div>
+
+---
+
+<div dir="ltr" align="justify">
+
+# 🌌 AuraAcoustic Engine - V1.4.0-CORE (English Overview)
+
+> **An advanced, hyper-responsive browser-based real-time 3D Acoustic Tracker and Waterfall Spectrogram.**
+>
+> **Inventor & Lead Architect: AmirSaman Pirayeshfar**
+>
+> 🌐 **[Launch Live Vercel Production Deployment](https://real-time-3-d-triangulation-based-o.vercel.app/)**
+
+---
+
+## 🌊 System Concept
+
+**AuraAcoustic CORE** is a specialized web acoustics playground and digital signal processing (DSP) environment. Designed entirely in client-side HTML5 Web Audio API, Canvas 2D isometric matrices, and premium CSS, this application delivers high-density sound telemetry with native physical dispersion, Doppler simulation, atmospheric acoustic dampening (absorption properties), and active stereo-phase spatial triangulation.
+
+---
+
+## 👤 Developer Profile
+
+This platform represents my dedication to building low-overhead, high-performance web graphics and functional visual acoustics:
+
+*   **Creator / Architect:** AmirSaman Pirayeshfar
+*   **Inquiries & Contact:** `pirayeshfar@gmail.com`
+*   **Repository Objective:** Promote lightweight, beautiful Audio-DSP visualization architectures without bloated third-party 3D graphics libraries.
+
+---
+
+## ⚡ Technical Highlights
+
+### 1. Interactive 360° 3D Waterfall Spectrogram
+*   **True Free Rotation Camera:** Manipulate both Pitch and Yaw through direct drag-and-drop to review spectral terrain from an oblique level down to a strict top-down Orthographic layout.
+*   **Continuous Inertial Zooming:** Zoom incrementally through simple scroll wheel or trackpad gestures.
+*   **Dynamic Depth Buffering:** Renders up to 55 historical frequency rows using an customized Painter's sorting algorithm for flawless layering.
+
+### 2. Triangulation Sound Compass Radar
+*   **Live Stereo Phase Analysis (ITD):** Evaluates micro-second arrival offsets of live dual-channel user microphone capsules to calculate exact incident wave directions.
+*   **Multi-Emitter Physics Simulator:** Control up to 3 spatialized moving sound bodies with detailed distance ratios, custom velocities, and acoustic dampening configurations.
+
+### 3. Integrated AI Acoustic Advisor
+*   Powered by server-side Gemini 3.5 Flash, the advisor translates raw frequency profiles and centroid balances into elegant, readable scientific diagnostics on sound propagation.
+
+---
+
+## 🚀 Native Installation
+
+### 1. Retrieve Packages
+Execute the standard package manager to instantiate the local development dependencies:
+```bash
+npm install
+```
+
+### 2. Ignite Development Server
+Spin up the hot-reloading development server:
+```bash
+npm run dev
+```
+
+### 3. Production Build
+Generate fully squashed, production-optimized bundles in the `dist/` directory:
+```bash
+npm run build
+```
+
+---
+
+*All conceptual frameworks, designs, and source implementations are proudly authored by **AmirSaman Pirayeshfar**.*
+
+</div>

@@ -6,9 +6,12 @@ interface BandClassifierProps {
   // Live values from the audio analyser for each of the bands (0 to 1 scale)
   bandAmplitudes: Record<FrequencyBandType, number>;
   activeBand: FrequencyBandType;
+  lang?: 'fa' | 'en';
 }
 
-export default function BandClassifier({ bandAmplitudes, activeBand }: BandClassifierProps) {
+export default function BandClassifier({ bandAmplitudes, activeBand, lang = 'fa' }: BandClassifierProps) {
+  const isEn = lang === 'en';
+
   return (
     <div className="flex flex-col gap-6">
       {/* Dynamic Classification Header banner */}
@@ -19,18 +22,22 @@ export default function BandClassifier({ bandAmplitudes, activeBand }: BandClass
           </span>
           <div>
             <h3 className="font-sans font-medium text-slate-100 flex items-center gap-2">
-              <span>دسته‌بندی طیف‌های فرکانسی صوتی</span>
-              <span className="text-xs text-slate-400 font-mono">Acoustic Spectrometer Classification</span>
+              <span>{isEn ? 'Acoustic Frequency Band Classification' : 'دسته‌بندی طیف‌های فرکانسی صوتی'}</span>
+              {!isEn && <span className="text-xs text-slate-400 font-mono">Acoustic Spectrometer Classification</span>}
             </h3>
             <p className="text-xs text-slate-400 font-sans mt-0.5">
-              تفکیک فرکانس‌های زیر، میانه و بم صوتی به همراه تشریح فیزیک موج و رفتارهای زیستی
+              {isEn 
+                ? 'Separation of infrasound, bass, mid, and high frequencies with physical dynamics and biological use-cases.'
+                : 'تفکیک فرکانس‌های زیر، میانه و بم صوتی به همراه تشریح فیزیک موج و رفتارهای زیستی'}
             </p>
           </div>
         </div>
 
         {/* Current Active Band indicator */}
         <div className="flex items-center gap-2 px-4 py-2 bg-slate-950/80 border border-slate-800 rounded-xl">
-          <span className="text-xs text-slate-400 font-sans">باند صوتی غالب محیط:</span>
+          <span className="text-xs text-slate-400 font-sans">
+            {isEn ? 'Dominant Acoustic Band:' : 'باند صوتی غالب محیط:'}
+          </span>
           <span 
             className="text-xs font-bold font-sans px-2.5 py-0.5 rounded-full transition-all flex items-center gap-1"
             style={{ 
@@ -40,7 +47,7 @@ export default function BandClassifier({ bandAmplitudes, activeBand }: BandClass
             }}
           >
             <Sparkles className="w-3 h-3 animate-spin-slow" />
-            <span>{FREQUENCY_BANDS[activeBand].nameFa}</span>
+            <span>{isEn ? FREQUENCY_BANDS[activeBand].name : FREQUENCY_BANDS[activeBand].nameFa}</span>
           </span>
         </div>
       </div>
@@ -71,24 +78,26 @@ export default function BandClassifier({ bandAmplitudes, activeBand }: BandClass
                     className="p-1 rounded-md text-[9px] font-bold font-sans tracking-wide shrink-0 animate-pulse"
                     style={{ backgroundColor: `${band.color}30`, color: band.color }}
                   >
-                    فعال (Active)
+                    {isEn ? 'Active' : 'فعال'}
                   </span>
                 )}
               </div>
 
               <div className="mb-3">
                 <h4 className="font-sans font-bold text-slate-100 text-sm flex justify-between items-center">
-                  <span>{band.nameFa}</span>
+                  <span>{isEn ? band.name : band.nameFa}</span>
                 </h4>
-                <p className="text-[10px] font-serif tracking-tight text-slate-400 font-mono mt-0.5">
-                  {band.name}
-                </p>
+                {isEn && (
+                  <p className="text-[10px] font-serif tracking-tight text-slate-400 font-mono mt-0.5">
+                    {band.type.toUpperCase()}
+                  </p>
+                )}
               </div>
 
               {/* Live amplitude meter */}
               <div className="bg-slate-950 p-2 rounded-lg border border-slate-850/80 mb-4 flex flex-col gap-1.5">
                 <div className="flex justify-between items-center text-[10px]">
-                  <span className="text-slate-400">شدت سیگنال زنده</span>
+                  <span className="text-slate-400">{isEn ? 'Live Amplitude' : 'شدت سیگنال زنده'}</span>
                   <span className="font-mono text-right" style={{ color: band.color }}>
                     {(ampVal * 100).toFixed(0)}%
                   </span>
@@ -105,9 +114,9 @@ export default function BandClassifier({ bandAmplitudes, activeBand }: BandClass
                 </div>
               </div>
 
-              {/* Farsi description */}
+              {/* description */}
               <div className="text-[11px] text-slate-300 leading-relaxed font-sans mb-3 flex-1 min-h-[70px]">
-                {band.descriptionFa}
+                {isEn ? band.description : band.descriptionFa}
               </div>
 
               {/* Divider */}
@@ -117,10 +126,10 @@ export default function BandClassifier({ bandAmplitudes, activeBand }: BandClass
               <div className="space-y-1.5 mt-1">
                 <span className="text-[9px] text-slate-400 uppercase tracking-wider font-mono font-bold flex items-center gap-1">
                   <Info className="w-3 h-3" />
-                  <span>نمونه‌های طبیعی و مصنوعی</span>
+                  <span>{isEn ? 'Examples' : 'نمونه‌های طبیعی و مصنوعی'}</span>
                 </span>
                 <div className="flex flex-wrap gap-1.5 pt-1">
-                  {band.examplesFa.map((ex, idx) => (
+                  {(isEn ? band.examples : band.examplesFa).map((ex, idx) => (
                     <span
                       key={idx}
                       className="px-2 py-0.5 rounded text-[9px] bg-slate-950/80 border border-slate-850 text-slate-300 hover:text-white transition-colors font-sans"
@@ -129,11 +138,6 @@ export default function BandClassifier({ bandAmplitudes, activeBand }: BandClass
                     </span>
                   ))}
                 </div>
-              </div>
-
-              {/* English secondary desc for completeness */}
-              <div className="mt-4 pt-3 border-t border-slate-850 text-[9px] text-slate-400 leading-normal line-clamp-2">
-                {band.description}
               </div>
             </div>
           );
@@ -144,31 +148,55 @@ export default function BandClassifier({ bandAmplitudes, activeBand }: BandClass
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-900/40 p-5 rounded-2xl border border-slate-800 backdrop-blur-md">
         <div className="space-y-2">
           <h5 className="text-xs font-bold text-slate-200 uppercase tracking-wider font-mono flex items-center gap-1.5">
-            <span>🧬 فیزیک طول موج و رفتار صوتی</span>
-            <span className="text-slate-400">• Acoustic Wave Dynamics</span>
+            <span>{isEn ? '🧬 Wave Physics & Acoustic Behavior' : '🧬 فیزیک طول موج و رفتار صوتی'}</span>
           </h5>
           <div className="text-xs text-slate-400 leading-relaxed font-sans space-y-2">
-            <p>
-              صدا ارتعاش مکانیکی ذرات هوا است. هرچه فرکانس صدا <span className="text-violet-400 font-bold">بم‌تر</span> (مثل فروصوت) باشد، طول موج بلندتر است (در ۲0 هرتز طول موج حدود هفده متر است!) و این امواج بسیار راحت از دیوار، خاک، آب‌وهوا عبور کرده و توان پیمودن مسافت‌های فراملی را دارند.
-            </p>
-            <p>
-              در طرف مقابل، فرکانس‌های <span className="text-red-400 font-bold">فراصوت</span> طول‌موج‌هایی در حد چند میلی‌متر دارند. این امواج به سادگی به موانع برخورد می‌کنند، موانع برای آن‌ها سایه‌ای عمیق ایجاد می‌کنند و همین ویژگی است که به خفاش‌ها اجازه می‌دهد با رفلکس سیگنال خود تصاویری دقیق از پشه‌های ریز ترسیم کنند.
-            </p>
+            {isEn ? (
+              <>
+                <p>
+                  Sound is a mechanical vibration of air molecules. The <span className="text-violet-400 font-bold">lower</span> the frequency (such as infrasound), the longer the physical wavelength (at 20 Hz, a single wavelength is around 17 meters!). These long waves easily penetrate through heavy solid obstacles, earth, and atmospheric hums to traverse cross-country distances.
+                </p>
+                <p>
+                  Conversely, high-frequency and <span className="text-red-400 font-bold">ultrasound</span> waves have tiny wavelengths (a few millimeters). Obstacles generate sharp acoustic shadows for them, which enables bats to bounce ultrashort echo reflexes and accurately locate tiny flying insects.
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  صدا ارتعاش مکانیکی ذرات هوا است. هرچه فرکانس صدا <span className="text-violet-400 font-bold">بم‌تر</span> (مثل فروصوت) باشد، طول موج بلندتر است (در ۲0 هرتز طول موج حدود هفده متر است!) و این امواج بسیار راحت از دیوار، خاک، آب‌وهوا عبور کرده و توان پیمودن مسافت‌های فراملی را دارند.
+                </p>
+                <p>
+                  در طرف مقابل، فرکانس‌های <span className="text-red-400 font-bold">فراصوت</span> طول‌موج‌هایی در حد چند میلی‌متر دارند. این امواج به سادگی به موانع برخورد می‌کنند، موانع برای آن‌ها سایه‌ای عمیق ایجاد می‌کنند و همین ویژگی است که به خفاش‌ها اجازه می‌دهد با رفلکس سیگنال خود تصاویری دقیق از پشه‌های ریز ترسیم کنند.
+                </p>
+              </>
+            )}
           </div>
         </div>
 
         <div className="space-y-2">
           <h5 className="text-xs font-bold text-slate-200 uppercase tracking-wider font-mono flex items-center gap-1.5">
-            <span>⚠️ محدودیت‌های حسگر متداول میکروفون</span>
-            <span className="text-slate-405">• Microphones Hardware Boundaries</span>
+            <span>{isEn ? '⚠️ Microphone Hardware Limits' : '⚠️ محدودیت‌های حسگر متداول میکروفون'}</span>
           </h5>
           <div className="text-xs text-slate-400 leading-relaxed font-sans space-y-2">
-            <p>
-              میکروفون‌های استاندارد گوشی یا لپ‌تاپ معمولاً برای مکالمات انسانی کالیبره شده‌اند و فرکانس‌های زیر ۱۰۰ هرتز و بالای ۱۶ هزار هرتز را فیلتر یا ضعیف می‌کنند.
-            </p>
-            <p>
-              با این حال، کارت صدا ارتعاشات الکترونیکی ورودی را بین <span className="text-emerald-400 font-bold font-mono">20Hz</span> تا <span className="text-emerald-400 font-bold font-mono">24,000Hz</span> دریافت می‌کند. برای تجربه مطلوب فرکانس‌های خارج از شنوایی انسان، استفاده از میکروفون‌های مجهز به کپسول خازنی عریض (برای فروصوت) یا مبدل‌های آلتراسونیک پیزو (برای فراصوت) پیشنهاد می‌شود.
-            </p>
+            {isEn ? (
+              <>
+                <p>
+                  Standard consumer microphones in laptops or smartphones are carefully calibrated for human speech parameters. Consequently, they attenuate or filter frequencies below 100 Hz and above 16 kHz.
+                </p>
+                <p>
+                  Nonetheless, soundcards record electronic oscillations from <span className="text-emerald-400 font-bold font-mono">20Hz</span> up to <span className="text-emerald-400 font-bold font-mono">24,000Hz</span>. For fully authentic experimental feedback outside human acoustic range, specialized condenser microphones or ultrasonic piezo transducers are recommended.
+                </p>
+              </>
+            ) : (
+              <>
+                <p>
+                  میکروفون‌های استاندارد گوشی یا لپ‌تاپ معمولاً برای مکالمات انسانی کالیبره شده‌اند و فرکانس‌های زیر ۱۰۰ هرتز و بالای ۱۶ هزار هرتز را فیلتر یا ضعیف می‌کنند.
+                </p>
+                <p>
+                  با این حال، کارت صدا ارتعاشات الکترونیکی ورودی را بین <span className="text-emerald-400 font-bold font-mono">20Hz</span> تا <span className="text-emerald-400 font-bold font-mono">24,000Hz</span> دریافت می‌کند. برای تجربه مطلوب فرکانس‌های خارج از شنوایی انسان، استفاده از میکروفون‌های مجهز به کپسول خازنی عریض (برای فروصوت) یا مبدل‌های آلتراسونیک پیزو (برای فراصوت) پیشنهاد می‌شود.
+                </p>
+              </>
+            )}
           </div>
         </div>
       </div>

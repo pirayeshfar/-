@@ -23,6 +23,9 @@ import BandClassifier from './components/BandClassifier';
 import AiAcousticExpert from './components/AiAcousticExpert';
 
 export default function App() {
+  // Language selector: 'fa' | 'en'
+  const [lang, setLang] = useState<'fa' | 'en'>('fa');
+
   // Mode selection: true = real microphone, false = 3D Space Simulator
   const [isLiveMode, setIsLiveMode] = useState<boolean>(false);
   const [micActive, setMicActive] = useState<boolean>(false);
@@ -58,7 +61,7 @@ export default function App() {
   const [emitters, setEmitters] = useState<SoundEmitter[]>([
     {
       id: 'emitter-1',
-      name: 'سیگنال فروصوت زمین‌لرزه',
+      name: 'Earthquake Infrasound Signal',
       nameFa: 'سیگنال فروصوت زمین‌لرزه',
       type: 'infrasound',
       frequency: 14,
@@ -67,12 +70,12 @@ export default function App() {
       y: 2, // low on floor
       z: 80, // far back
       icon: '🌋',
-      description: 'امواج فرکانس عمیق تکتونیکی ناشی از لرزش لایه‌های زمین',
+      description: 'Deep tectonic low-frequency waves caused by seismic shaking of the ground layers.',
       descriptionFa: 'امواج فرکانس عمیق تکتونیکی ناشی از لرزش لایه‌های زمین'
     },
     {
       id: 'emitter-2',
-      name: 'مکالمه آواز انسان (میانه)',
+      name: 'Human Voice Conversation (Mid)',
       nameFa: 'مکالمه آواز انسان (میانه)',
       type: 'human-mid',
       frequency: 620,
@@ -81,12 +84,12 @@ export default function App() {
       y: 12, // standing height
       z: 30, // medium close
       icon: '🗣️',
-      description: 'امواج صوتی گفتاری انسان فرکانس میانه',
+      description: 'Standard human vocal speech and singing audio waves in mid frequencies.',
       descriptionFa: 'امواج صوتی گفتاری انسان فرکانس میانه'
     },
     {
       id: 'emitter-3',
-      name: 'ردیابی فراصوت خفاش',
+      name: 'Bat Ultrasound Location Sweep',
       nameFa: 'ردیابی فراصوت خفاش',
       type: 'ultrasound',
       frequency: 22800,
@@ -95,7 +98,7 @@ export default function App() {
       y: 65, // flying very high
       z: -40, // close front
       icon: '🦇',
-      description: 'سیگنال رفلکس پیزوالکتریک بیولوژیکی جهت‌یابی خفاش',
+      description: 'Biological high-fidelity ultrasound reflection clicks used for bat echolocation.',
       descriptionFa: 'سیگنال رفلکس پیزوالکتریک بیولوژیکی جهت‌یابی خفاش'
     }
   ]);
@@ -455,9 +458,13 @@ export default function App() {
   }, [emitters, isLiveMode]);
 
   const currentDominantBand = FREQUENCY_BANDS[activeBand];
+  const isEn = lang === 'en';
 
   return (
-    <div className="min-h-screen bg-[#050505] text-[#e0e0e0] flex flex-col font-sans selection:bg-blue-500/30 overflow-x-hidden">
+    <div 
+      className="min-h-screen bg-[#050505] text-[#e0e0e0] flex flex-col font-sans selection:bg-blue-500/30 overflow-x-hidden"
+      dir={isEn ? 'ltr' : 'rtl'}
+    >
       
       {/* Premium Header Navigation conforming to Sophisticated Dark */}
       <header className="h-16 border-b border-white/10 flex items-center justify-between px-6 bg-[#0a0a0a] sticky top-0 z-40 backdrop-blur-md">
@@ -465,12 +472,14 @@ export default function App() {
           <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-blue-500 to-purple-600 flex items-center justify-center shadow-lg shadow-purple-500/20">
             <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
           </div>
-          <div className="text-right md:text-left">
+          <div className={`${isEn ? 'text-left' : 'text-right'}`}>
             <h1 className="text-sm md:text-base font-semibold tracking-tight uppercase text-white/95 flex items-center gap-2">
-              <span>جهت‌یاب سه‌بعدی و آنالیزور آکوستیک</span>
+              <span>{isEn ? '3D Acoustic Radar & Spectrogram' : 'جهت‌یاب سه‌بعدی و آنالیزور آکوستیک'}</span>
               <span className="text-blue-500 font-mono tracking-widest text-xs">X-360</span>
             </h1>
-            <p className="hidden md:block text-[10px] text-white/40 font-mono">Real-time 3D triangulation based on Lidar & Mic Array</p>
+            <p className="hidden md:block text-[10px] text-white/40 font-mono">
+              {isEn ? 'Real-time 3D triangulation based on Lidar & Stereo Mic Array' : 'جهت‌یابی آکوستیک زنده بر اساس میکروفون استریو و سنسور لایدار'}
+            </p>
           </div>
         </div>
 
@@ -481,7 +490,7 @@ export default function App() {
             className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-1.5 cursor-pointer ${!isLiveMode ? 'bg-blue-600/20 border border-blue-500/40 text-blue-400' : 'text-white/40 hover:text-white'}`}
           >
             <Cpu className="w-3.5 h-3.5" />
-            <span>شبیه‌ساز فضا</span>
+            <span>{isEn ? 'Spatial Simulator' : 'شبیه‌ساز فضا'}</span>
           </button>
           <button
             onClick={() => {
@@ -494,29 +503,40 @@ export default function App() {
             className={`px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider transition-all duration-300 flex items-center gap-1.5 cursor-pointer ${isLiveMode ? 'bg-emerald-600/20 border border-emerald-500/40 text-emerald-400 glow-emerald' : 'text-white/40 hover:text-white'}`}
           >
             <Mic className="w-3.5 h-3.5" />
-            <span>سنسور زنده میکروفون</span>
+            <span>{isEn ? 'Live Mic Sensor' : 'سنسور زنده میکروفون'}</span>
           </button>
         </div>
 
         {/* Status logs */}
-        <div className="hidden lg:flex items-center gap-6">
-          <div className="flex items-center gap-2">
-            <span className={`w-2 h-2 rounded-full ${micActive ? 'bg-green-500 animate-pulse' : 'bg-white/20'}`}></span>
-            <span className="text-[10px] font-mono text-white/50 uppercase tracking-widest">
-              Mic: {micActive ? 'Active' : 'Offline'}
-            </span>
+        <div className="flex items-center gap-4 lg:gap-6">
+          <div className="hidden lg:flex items-center gap-6">
+            <div className="flex items-center gap-2">
+              <span className={`w-2 h-2 rounded-full ${micActive ? 'bg-green-500 animate-pulse' : 'bg-white/20'}`}></span>
+              <span className="text-[10px] font-mono text-white/50 uppercase tracking-widest">
+                {isEn ? 'Mic:' : 'سنسور:'} {micActive ? (isEn ? 'Active' : 'فعال') : (isEn ? 'Offline' : 'غیرفعال')}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className={`w-2 h-2 rounded-full ${!isLiveMode ? 'bg-blue-500' : 'bg-white/20'}`}></span>
+              <span className="text-[10px] font-mono text-white/50 uppercase tracking-widest">
+                {isEn ? 'Sim:' : 'شبیه‌ساز:'} {!isLiveMode ? (isEn ? 'Synthesized' : 'متصل') : (isEn ? 'Inert' : 'غیرفعال')}
+              </span>
+            </div>
+            <div className="h-4 w-px bg-white/20"></div>
+            <div className="flex items-center gap-2.5 text-[11px] text-white/40 font-mono">
+              <Clock className="w-3.5 h-3.5 text-blue-500" />
+              <span>{utcTime}</span>
+            </div>
+            <div className="h-4 w-px bg-white/20"></div>
           </div>
-          <div className="flex items-center gap-2">
-            <span className={`w-2 h-2 rounded-full ${!isLiveMode ? 'bg-blue-500' : 'bg-white/20'}`}></span>
-            <span className="text-[10px] font-mono text-white/50 uppercase tracking-widest">
-              Simulator: {!isLiveMode ? 'Linked' : 'Inert'}
-            </span>
-          </div>
-          <div className="h-4 w-px bg-white/20"></div>
-          <div className="flex items-center gap-2.5 text-[11px] text-white/40 font-mono">
-            <Clock className="w-3.5 h-3.5 text-blue-500" />
-            <span>{utcTime}</span>
-          </div>
+
+          {/* Bilingual Language Switch button */}
+          <button
+            onClick={() => setLang(lang === 'en' ? 'fa' : 'en')}
+            className="px-3 py-1.5 rounded-lg border border-white/10 bg-[#121212] hover:bg-[#1f1f1f] text-[11px] text-indigo-300 font-bold transition-all shadow-md flex items-[#center] gap-1 cursor-pointer font-sans"
+          >
+            <span>{isEn ? '🇮🇷 فارسی' : '🇬🇧 English'}</span>
+          </button>
         </div>
       </header>
 
@@ -528,13 +548,17 @@ export default function App() {
           <div className="p-4 bg-amber-500/10 border border-amber-500/20 text-xs text-amber-300 rounded-xl font-sans flex items-center justify-between gap-4">
             <div className="flex items-center gap-2">
               <VolumeX className="w-4 h-4 text-amber-400 shrink-0" />
-              <span>سنسور میکروفون به علت عدم برقراری مجوز مرورگر غیرفعال است. لطفاً جهت استفاده، دکمه روبرو را کلیک کنید:</span>
+              <span>
+                {isEn 
+                  ? 'Microphone device index has not been provisioned. Please check browser permissions and click to enable:' 
+                  : 'سنسور میکروفون به علت عدم برقراری مجوز مرورگر غیرفعال است. لطفاً جهت استفاده، دکمه روبرو را کلیک کنید:'}
+              </span>
             </div>
             <button
               onClick={toggleMicrophone}
               className="px-3.5 py-1.5 bg-amber-500 text-slate-950 font-bold hover:bg-amber-400 transition-all rounded-lg shrink-0 cursor-pointer"
             >
-              اجازه دسترسی صوتی
+              {isEn ? 'Allow Microphone Access' : 'اجازه دسترسی صوتی'}
             </button>
           </div>
         )}
@@ -549,6 +573,7 @@ export default function App() {
               audioCtx={audioCtxRef.current}
               simulatedBuffer={!isLiveMode ? simulatedBuffer : null}
               themeColor={currentDominantBand.color}
+              lang={lang}
             />
           </div>
 
@@ -565,6 +590,7 @@ export default function App() {
               liveHeight={liveHeight}
               liveVolume={liveVolume}
               livePeakFreq={livePeakFreq}
+              lang={lang}
             />
           </div>
         </div>
@@ -577,6 +603,7 @@ export default function App() {
             <BandClassifier
               bandAmplitudes={bandAmplitudes}
               activeBand={activeBand}
+              lang={lang}
             />
           </div>
 
@@ -589,21 +616,34 @@ export default function App() {
               currentBand={currentDominantBand.name}
               currentBandFa={currentDominantBand.nameFa}
               isLiveMode={isLiveMode}
+              lang={lang}
             />
           </div>
         </div>
 
-        {/* Extra informative Persian guidelines panel / user checklist */}
+        {/* Extra informative guidelines panel / user checklist */}
         <div className="p-5 bg-[#0a0a0a] border border-white/10 rounded-2xl flex flex-col md:flex-row gap-5 items-start font-sans">
           <div className="p-3 bg-blue-500/10 rounded-xl text-blue-400 border border-blue-500/20 shrink-0">
             <Mic className="w-5 h-5 animate-pulse" />
           </div>
-          <div className="space-y-1.5 flex-1 leading-relaxed text-right md:text-left">
-            <h5 className="text-sm font-bold text-white/90">💡 راهنمای کاربری و آزمایش‌های جذاب آکوستیک</h5>
+          <div className={`space-y-1.5 flex-1 leading-relaxed ${isEn ? 'text-left' : 'text-right'}`}>
+            <h5 className="text-sm font-bold text-white/90">
+              {isEn ? '💡 Interactive Acoustic Guide & Lab Experiments' : '💡 راهنمای کاربری و آزمایش‌های جذاب آکوستیک'}
+            </h5>
             <div className="text-xs text-white/60 space-y-1.5 my-2">
-              <p>• <b>آزمایش اول (فروصوت):</b> حالت شبیه‌ساز را فعال کنید، چشمه صوتی زلزله را با فرکانس ۱۴ هرتز بردارید و فاصله آن را تغییر دهید. می‌بینید که به‌دلیل طول‌موج بلند، افت فرکانسی در جو صورت نمی‌گیرد و ارتفاع موج سه‌بعدی به نرمی کاهش می‌یابد.</p>
-              <p>• <b>آزمایش دوم (فراصوت):</b> پشه را با فرکانس ۱۷ کیلوهرتز لود کنید و فاصله Z آن را عقب ببرید. شاهد افت بسیار تیز ارتفاع قله‌ها به دلیل جذب ممتد هوا (Atmospheric Dampening) خواهید بود.</p>
-              <p>• <b>آزمایش سوم (میکروفون واقعی):</b> حالت میکروفون را فعال کرده و فوت خفیفی به کپسول سمت چپ یا راست لپ‌تاپ بکنید؛ سیستم بلافاصله توازن را آنالیز کرده و جهت صدا را بر روی مدار رادار ۳بعدی علامت‌گذاری خواهد کرد!</p>
+              {isEn ? (
+                <>
+                  <p>• <b>Experiment 1 (Infrasound):</b> Enable simulator mode. Try repositioning the Earthquake emitter (14Hz) and adjust its Z (depth) parameter. Because sub-bass infrasonic waves have massive physical lengths, they do not dissipate easily in standard atmospheres—letting them carry far with only geometric expansion loss.</p>
+                  <p>• <b>Experiment 2 (Ultrasound & Air Dampening):</b> Spawn the Mosquito preset (17.4kHz) or the Bat Ultrasound sweep. Move its depth far away. You will notice high frequencies decay rapidly in atmosphere due to molecular thermal kinetic absorption (Atmospheric Dampening).</p>
+                  <p>• <b>Experiment 3 (Live Directional Test):</b> Activate your microphone and snap or speak gently on either side of your screen. The DSP array immediately measures physical micro-second arrival time differences, instantly drafting coordinates on the 3D Polar Radar!</p>
+                </>
+              ) : (
+                <>
+                  <p>• <b>آزمایش اول (فروصوت):</b> حالت شبیه‌ساز را فعال کنید، چشمه صوتی زلزله را با فرکانس ۱۴ هرتز بردارید و فاصله آن را تغییر دهید. می‌بینید که به‌دلیل طول‌موج بلند، افت فرکانسی در جو صورت نمی‌گیرد و ارتفاع موج سه‌بعدی به نرمی کاهش می‌یابد.</p>
+                  <p>• <b>آزمایش دوم (فراصوت):</b> پشه را با فرکانس ۱۷ کیلوهرتز لود کنید و فاصله Z آن را عقب ببرید. شاهد افت بسیار تیز ارتفاع قله‌ها به دلیل جذب ممتد هوا (Atmospheric Dampening) خواهید بود.</p>
+                  <p>• <b>آزمایش سوم (میکروفون واقعی):</b> حالت میکروفون را فعال کرده و فوت خفیف یا کِلیکی در کنار کپسول چپ یا راست لپ‌تاپ بکنید؛ سیستم بلافاصله اختلاف فاز را آنالیز کرده و جهت صدا را بر روی مدار رادار ۳بعدی علامت‌گذاری خواهد کرد!</p>
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -621,7 +661,10 @@ export default function App() {
           <span className="hidden md:inline">| © 2026 AuraAcoustic Engine</span>
         </div>
         <div className="flex gap-4 items-center justify-center sm:justify-end flex-wrap">
-          <span className="text-white/60 text-[11px]">ایده‌پرداز و طراح: <strong className="text-white/80 font-bold">امیرسامان پیرایش فر</strong></span>
+          <span className="text-white/60 text-[11px]">
+            {isEn ? 'Acoustic Inventor & Lead Architect: ' : 'ایده‌پرداز و طراح: '}
+            <strong className="text-white/80 font-bold">{isEn ? 'Amirsaman Pirayesh Far' : 'امیرسامان پیرایش فر'}</strong>
+          </span>
           <span className="text-white/20">|</span>
           <span className="flex items-center gap-1.5 font-mono text-[10px]"><span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse"></span> SYSTEM READY</span>
           <span className="text-white/20">|</span>

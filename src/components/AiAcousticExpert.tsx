@@ -9,6 +9,7 @@ interface AiAcousticExpertProps {
   currentBand: string;
   currentBandFa: string;
   isLiveMode: boolean;
+  lang?: 'fa' | 'en';
 }
 
 export default function AiAcousticExpert({
@@ -18,7 +19,10 @@ export default function AiAcousticExpert({
   currentBand,
   currentBandFa,
   isLiveMode,
+  lang = 'fa',
 }: AiAcousticExpertProps) {
+  const isEn = lang === 'en';
+  
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [analysisResult, setAnalysisResult] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
@@ -31,10 +35,10 @@ export default function AiAcousticExpert({
     let profileEn = 'flat, continuous';
     if (currentPeakHz < 200 && currentVolumeDb > 0.1) {
       profile = 'پالس بم، زمزمه فرکانس پایین';
-      profileEn = 'low-frequency hum, deep rumble';
+      profileEn = 'low-frequency hum, deep tectonic rumble';
     } else if (currentPeakHz > 12000) {
       profile = 'تیز، سوزنی با نوسان شدید بالارده';
-      profileEn = 'sharp peak, extreme high presence';
+      profileEn = 'sharp peak, extreme ultrasound presence';
     } else if (currentAvgHz > 300 && currentAvgHz < 3400) {
       profile = 'منطبق بر ساختار گفتاری انسان';
       profileEn = 'speech-like, mid-range complex profile';
@@ -48,7 +52,7 @@ export default function AiAcousticExpert({
       bandFa: currentBandFa,
       profile: profileEn,
       profileFa: profile,
-      timestamp: new Date().toLocaleTimeString('fa-IR'),
+      timestamp: isEn ? new Date().toLocaleTimeString('en-US') : new Date().toLocaleTimeString('fa-IR'),
     };
     setCapturedSnapshot(snap);
     setAnalysisResult(null);
@@ -64,7 +68,7 @@ export default function AiAcousticExpert({
       bandFa: currentBandFa,
       profile: 'flat ambient noise',
       profileFa: 'نویز پراکنده محیطی',
-      timestamp: new Date().toLocaleTimeString('fa-IR'),
+      timestamp: isEn ? new Date().toLocaleTimeString('en-US') : new Date().toLocaleTimeString('fa-IR'),
     };
 
     setIsAnalyzing(true);
@@ -81,6 +85,7 @@ export default function AiAcousticExpert({
           volumeDb: snap.volumeDb,
           band: snap.band,
           profile: snap.profile,
+          lang: isEn ? 'en' : 'fa'
         }),
       });
 
@@ -88,11 +93,13 @@ export default function AiAcousticExpert({
       if (data.success) {
         setAnalysisResult(data.text);
       } else {
-        setErrorMsg(data.error || 'ارتباط با سرور امکان‌پذیر نبود.');
+        setErrorMsg(data.error || (isEn ? 'Could not connect to the analysis server.' : 'ارتباط با سرور امکان‌پذیر نبود.'));
       }
     } catch (err: any) {
       console.error('API Error:', err);
-      setErrorMsg('کارت اتصال شبکه قطع شد یا خطایی در سرور رخ داد. لطفا دوباره تلاش کنید.');
+      setErrorMsg(isEn 
+        ? 'Acoustic network node timed out. Please ensure standard Gemini backend rules are running.'
+        : 'کارت اتصال شبکه قطع شد یا خطایی در سرور رخ داد. لطفا دوباره تلاش کنید.');
     } finally {
       setIsAnalyzing(false);
     }
@@ -105,7 +112,7 @@ export default function AiAcousticExpert({
       // Is clean heading
       if (line.startsWith('### ')) {
         return (
-          <h5 key={idx} className="text-sm font-bold text-slate-100 flex items-center gap-1.5 mt-4 mb-2 font-sans text-right border-r-2 border-indigo-500 pr-2 pb-0.5">
+          <h5 key={idx} className={`text-sm font-bold text-slate-100 flex items-center gap-1.5 mt-4 mb-2 font-sans pb-0.5 ${isEn ? 'text-left border-l-2 border-indigo-500 pl-2' : 'text-right border-r-2 border-indigo-500 pr-2'}`}>
             <Sparkles className="w-3.5 h-3.5 text-indigo-400" />
             <span>{line.replace('### ', '').trim()}</span>
           </h5>
@@ -113,14 +120,14 @@ export default function AiAcousticExpert({
       }
       if (line.startsWith('## ')) {
         return (
-          <h4 key={idx} className="text-base font-bold text-slate-100 mt-5 mb-2.5 font-sans text-right border-r-4 border-indigo-500 pr-2.5 pb-1 bg-slate-950/40 py-1 rounded-l-md">
+          <h4 key={idx} className={`text-base font-bold text-slate-100 mt-5 mb-2.5 font-sans pb-1 bg-slate-950/40 py-1 rounded-md ${isEn ? 'text-left border-l-4 border-indigo-500 pl-2.5' : 'text-right border-r-4 border-indigo-500 pr-2.5'}`}>
             <span>{line.replace('## ', '').trim()}</span>
           </h4>
         );
       }
       if (line.startsWith('# ')) {
         return (
-          <h3 key={idx} className="text-lg font-bold text-[#fafafa] mt-6 mb-3 font-sans text-right">
+          <h3 key={idx} className={`text-lg font-bold text-[#fafafa] mt-6 mb-3 font-sans ${isEn ? 'text-left' : 'text-right'}`}>
             {line.replace('# ', '').trim()}
           </h3>
         );
@@ -129,7 +136,7 @@ export default function AiAcousticExpert({
       if (line.trim().startsWith('- ') || line.trim().startsWith('* ')) {
         const cleanContent = line.replace(/^[\s*-]+/, '').trim();
         return (
-          <li key={idx} className="text-xs text-slate-300 leading-relaxed font-sans mr-4 mb-1.5 list-disc text-right">
+          <li key={idx} className={`text-xs text-slate-300 leading-relaxed font-sans mb-1.5 list-disc ${isEn ? 'ml-4 text-left' : 'mr-4 text-right'}`}>
             {parseInlineStyling(cleanContent)}
           </li>
         );
@@ -139,7 +146,7 @@ export default function AiAcousticExpert({
       if (line.trim() === '') return <div key={idx} className="h-2" />;
 
       return (
-        <p key={idx} className="text-xs text-slate-300 leading-relaxed font-sans mb-3 text-right">
+        <p key={idx} className={`text-xs text-slate-300 leading-relaxed font-sans mb-3 ${isEn ? 'text-left' : 'text-right'}`}>
           {parseInlineStyling(line)}
         </p>
       );
@@ -162,7 +169,7 @@ export default function AiAcousticExpert({
   };
 
   return (
-    <div className="bg-slate-900/60 rounded-2xl border border-slate-800 p-5 backdrop-blur-md flex flex-col h-full">
+    <div className="bg-slate-900/60 rounded-2xl border border-slate-800 p-5 backdrop-blur-md flex flex-col h-full text-justify">
       {/* Header Info */}
       <div className="flex items-center gap-3 mb-4.5">
         <span className="p-2.5 bg-indigo-600/20 text-indigo-400 rounded-xl border border-indigo-500/30">
@@ -170,11 +177,13 @@ export default function AiAcousticExpert({
         </span>
         <div>
           <h4 className="font-sans font-bold text-slate-100 flex items-center gap-2">
-            <span>تحلیلگر آکوستیک هوشمند (جمینی AI)</span>
-            <span className="text-xs text-indigo-400 font-mono">Gemini Acoustic Intelligence</span>
+            <span>{isEn ? 'AI Acoustic Intelligence (Gemini)' : 'تحلیلگر آکوستیک هوشمند (جمینی AI)'}</span>
+            {!isEn && <span className="text-xs text-indigo-400 font-mono">Gemini Acoustic Intelligence</span>}
           </h4>
-          <p className="text-xs text-slate-400 font-sans mt-0.5">
-            استفاده از مدل زبانه هوشمند برای تشخیص چشمه‌های صوتی، بررسی فرکانس‌های مخفی و علم فیزیک صوتی
+          <p className="text-xs text-slate-400 font-sans mt-0.5 leading-relaxed">
+            {isEn 
+              ? 'Leverage LLM reasoning models to diagnose captured sounds, analyze hidden sub-bands, and describe wave mechanics.'
+              : 'استفاده از مدل زبانه هوشمند برای تشخیص چشمه‌های صوتی، بررسی فرکانس‌های مخفی و علم فیزیک صوتی'}
           </p>
         </div>
       </div>
@@ -182,28 +191,30 @@ export default function AiAcousticExpert({
       {/* Snapshot panel capturing */}
       <div className="bg-slate-950/80 p-4 rounded-xl border border-slate-850/80 mb-4 grid grid-cols-1 md:grid-cols-2 gap-4">
         <div>
-          <p className="text-[11px] text-slate-400 font-mono uppercase tracking-wider mb-2 font-bold">ارقام طیفی لحظه‌ای</p>
+          <p className="text-[11px] text-slate-400 font-mono uppercase tracking-wider mb-2 font-bold">
+            {isEn ? 'Acoustic Snapshot Parameters' : 'ارقام طیفی لحظه‌ای'}
+          </p>
           <div className="space-y-1.5 text-xs text-slate-300 font-sans">
             <div className="flex justify-between border-b border-slate-900 pb-1">
-              <span>نقطه اوج فرکانسی (Peak)</span>
+              <span>{isEn ? 'Peak Frequency' : 'نقطه اوج فرکانسی (Peak)'}</span>
               <span className="font-mono text-cyan-400">{Math.round(currentPeakHz)} Hz</span>
             </div>
             <div className="flex justify-between border-b border-slate-900 pb-1">
-              <span>میانگین فرکانسی (Avg)</span>
+              <span>{isEn ? 'Average Spectrum' : 'میانگین فرکانسی (Avg)'}</span>
               <span className="font-mono text-cyan-400">{Math.round(currentAvgHz)} Hz</span>
             </div>
-            <div className="flex justify-between border-b border-slate-900 pb-1">
-              <span>رده‌بندی فیزیکی</span>
-              <span className="text-indigo-400 font-bold">{currentBandFa}</span>
+            <div className="flex justify-between border-b border-slate-900 pb-1 padding-x-1">
+              <span>{isEn ? 'Physical Classification' : 'رده‌بندی فیزیکی'}</span>
+              <span className="text-indigo-400 font-bold">{isEn ? currentBand : currentBandFa}</span>
             </div>
           </div>
 
           <button
             onClick={captureAcoustics}
-            className="w-full mt-3 px-3.5 py-1.5 bg-slate-900 hover:bg-slate-850 border border-slate-800 text-[11px] text-indigo-300 font-medium rounded-lg transition-all flex items-center justify-center gap-2"
+            className="w-full mt-3 px-3.5 py-1.5 bg-slate-900 hover:bg-slate-850 border border-slate-800 text-[11px] text-indigo-300 font-medium rounded-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
           >
             <Headphones className="w-3.5 h-3.5" />
-            <span>ثبت و ذخیره این اثر آکوستیک</span>
+            <span>{isEn ? 'Capture Wave Footprint' : 'ثبت و ذخیره این اثر آکوستیک'}</span>
           </button>
         </div>
 
@@ -211,24 +222,35 @@ export default function AiAcousticExpert({
         <div className="border hover:border-indigo-500/35 border-slate-850 bg-slate-950 p-3 rounded-xl flex flex-col justify-between">
           <div>
             <div className="flex justify-between items-center mb-1.5">
-              <span className="text-[10px] text-slate-400 font-sans">اثر صوتی ذخیره شده برای ارسال:</span>
+              <span className="text-[10px] text-slate-400 font-sans">
+                {isEn ? 'Stored Footprint Status:' : 'اثر صوتی ذخیره شده برای ارسال:'}
+              </span>
               <span className="text-[9px] text-[#fafafa] font-mono bg-slate-900 px-1 py-0.5 rounded">
-                {capturedSnapshot ? 'موجود' : 'خالی'}
+                {capturedSnapshot 
+                  ? (isEn ? 'Ready' : 'موجود') 
+                  : (isEn ? 'Empty' : 'خالی')}
               </span>
             </div>
             {capturedSnapshot ? (
               <div className="space-y-1 text-xs">
-                <p className="text-slate-100 font-bold text-right font-sans">
-                  فرکانس: <span className="font-mono text-indigo-400">{capturedSnapshot.peakHz}Hz</span> ({capturedSnapshot.bandFa})
+                <p className={`text-slate-100 font-bold font-sans ${isEn ? 'text-left' : 'text-right'}`}>
+                  {isEn ? 'Frequency:' : 'فرکانس:'}{' '}
+                  <span className="font-mono text-indigo-400">{capturedSnapshot.peakHz}Hz</span>{' '}
+                  ({isEn ? capturedSnapshot.band : capturedSnapshot.bandFa})
                 </p>
-                <p className="text-slate-400 text-right text-[11px] leading-relaxed font-sans">
-                  مشخصه موج: <span className="text-indigo-300">{capturedSnapshot.profileFa}</span>
+                <p className={`text-slate-400 text-[11px] leading-relaxed font-sans ${isEn ? 'text-left' : 'text-right'}`}>
+                  {isEn ? 'Wave Profile:' : 'مشخصه موج:'}{' '}
+                  <span className="text-indigo-300">{isEn ? capturedSnapshot.profile : capturedSnapshot.profileFa}</span>
                 </p>
-                <p className="text-[10px] text-slate-500 text-right mt-1 font-mono">ساعت نمونه: {capturedSnapshot.timestamp}</p>
+                <p className={`text-[10px] text-slate-500 mt-1 font-mono ${isEn ? 'text-left' : 'text-right'}`}>
+                  {isEn ? 'Timestamp:' : 'ساعت نمونه:'} {capturedSnapshot.timestamp}
+                </p>
               </div>
             ) : (
               <div className="flex-1 flex items-center justify-center py-4 text-center">
-                <span className="text-[10px] text-slate-500 font-sans">برای آغاز فرآیند، دکمه چپ را بزنید</span>
+                <span className="text-[10px] text-slate-500 font-sans">
+                  {isEn ? 'Take an acoustic footprint to analyze' : 'برای آغاز فرآیند، دکمه چپ را بزنید'}
+                </span>
               </div>
             )}
           </div>
@@ -237,10 +259,10 @@ export default function AiAcousticExpert({
             <button
               onClick={handleAiAnalyze}
               disabled={isAnalyzing}
-              className="w-full mt-2 px-4 py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 disabled:from-slate-800 disabled:to-slate-800 disabled:text-slate-500 text-xs text-white font-bold rounded-lg shadow-lg shadow-indigo-600/15 transition-all flex items-center justify-center gap-2"
+              className="w-full mt-2 px-4 py-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 disabled:from-slate-800 disabled:to-slate-800 disabled:text-slate-500 text-xs text-white font-bold rounded-lg shadow-lg shadow-indigo-600/15 transition-all flex items-center justify-center gap-2 cursor-pointer"
             >
               <Cpu className="w-3.5 h-3.5 animate-spin-slow" />
-              <span>ارسال ارقام طیف به جمینی AI</span>
+              <span>{isEn ? 'Diagnose via Gemini AI' : 'ارسال ارقام طیف به جمینی AI'}</span>
             </button>
           )}
         </div>
@@ -257,9 +279,13 @@ export default function AiAcousticExpert({
               </div>
             </div>
             <div className="space-y-1.5">
-              <p className="text-xs text-slate-200 font-bold font-sans">در حال بررسی اثر صوتی توسط جمینی...</p>
+              <p className="text-xs text-slate-200 font-bold font-sans">
+                {isEn ? 'Gemini AI is examining wave patterns...' : 'در حال بررسی اثر صوتی توسط جمینی...'}
+              </p>
               <p className="text-[10px] text-slate-400 font-sans">
-                سیگنال فرکانس {capturedSnapshot?.peakHz}Hz در حال تطبیق با مراجع فیزیکی و رفتارهای زیستی حیوانات است.
+                {isEn 
+                  ? `Comparing the ${capturedSnapshot?.peakHz}Hz spectrum offset with physics rules and animal bioacoustics.`
+                  : `سیگنال فرکانس ${capturedSnapshot?.peakHz}Hz در حال تطبیق با مراجع فیزیکی و رفتارهای زیستی حیوانات است.`}
               </p>
             </div>
           </div>
@@ -268,28 +294,38 @@ export default function AiAcousticExpert({
             <AlertTriangle className="w-8 h-8 text-amber-500 mb-2" />
             <p className="text-xs text-slate-300 font-medium font-sans mb-1">{errorMsg}</p>
             <p className="text-[10px] text-slate-500 font-sans">
-              اطمینان حاصل کنید که اینترنت متصل است و توکن `GEMINI_API_KEY` در زبانه Secrets به درستی تنظیم شده است.
+              {isEn 
+                ? 'Ensure you are connected to the internet and your GEMINI_API_KEY environment variable is defined inside the Secrets settings.'
+                : 'اطمینان حاصل کنید که اینترنت متصل است و توکن `GEMINI_API_KEY` در زبانه Secrets به درستی تنظیم شده است.'}
             </p>
           </div>
         ) : analysisResult ? (
           <div className="space-y-3">
             {/* Success indicator banner */}
             <div className="flex items-center justify-between border-b border-slate-850 pb-2.5">
-              <span className="text-[10px] text-slate-400 font-mono">پاسخ دریافتی از جمینی ۳.۵</span>
+              <span className="text-[10px] text-slate-400 font-mono">
+                {isEn ? 'Gemini 2.5 Pro Diagnostic Feed' : 'پاسخ دریافتی از جمینی ۳.۵'}
+              </span>
               <div className="flex items-center gap-1 text-[10px] text-emerald-400 font-bold font-sans">
                 <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                <span>تحلیل آکوستیک تکمیل شد</span>
+                <span>{isEn ? 'Analysis Complete' : 'تحلیل آکوستیک تکمیل شد'}</span>
               </div>
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 text-justify">
               {renderParsedAiResponse(analysisResult)}
             </div>
           </div>
         ) : (
-          <div className="h-full flex flex-col items-center justify-center text-center p-6 text-slate-500">
-            <Cpu className="w-10 h-10 text-slate-800 mb-2" />
-            <span className="text-xs font-sans">سیگنال صوتی را ثبت کرده و بر روی ارزیابی توسط هوش مصنوعی کلیک کنید</span>
-            <span className="text-[10px] text-slate-600 mt-1 font-sans">یافت کاتالوگی خفاش‌ها، موتورها، وسایل، همهمه بادی و التراسونیک به کار می‌رود</span>
+          <div className="h-full flex flex-col items-center justify-center text-center p-6 text-slate-500 space-y-1">
+            <Cpu className="w-10 h-10 text-slate-800 mb-1" />
+            <span className="text-xs font-bold text-slate-400 font-sans">
+              {isEn ? 'Capture soundwaves first, then run AI diagnostics' : 'سیگنال صوتی را ثبت کرده و بر روی ارزیابی توسط هوش مصنوعی کلیک کنید'}
+            </span>
+            <span className="text-[10px] text-slate-600 font-sans leading-relaxed">
+              {isEn 
+                ? 'Identifies sub-bass hums, tectonic infrasound, vocal patterns, whistle contours, and ultrasonic bat sweeps.'
+                : 'یافت کاتالوگی خفاش‌ها، موتورها، وسایل، همهمه بادی و التراسونیک به کار می‌رود'}
+            </span>
           </div>
         )}
       </div>
