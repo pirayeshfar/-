@@ -1,0 +1,10 @@
+{
+  "name": "3D Sound Analyzer and Classifier",
+  "description": "An advanced, real-time 3D sound visualizer, frequency band classifier, and directional acoustic simulator using Web Audio and Gemini AI.",
+  "requestFramePermissions": [
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
